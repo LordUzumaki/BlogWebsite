@@ -1,17 +1,35 @@
 {% extends "base.html" %}
+<!-- This template extends from "base.html" -->
+
 {% block title %}Home{% endblock %}
+<!-- This block sets the title of the page to "Home" -->
+
 {% block content %}
+<!-- This block contains the main content for the page -->
 <h1 class="mt-4">Blog Posts</h1>
+<!-- Header for the page with a margin-top class from Bootstrap -->
+
 {% for post in posts %}
+<!-- Loop through each post in the posts collection -->
     <div class="card my-4">
+        <!-- Bootstrap card with a margin-top and margin-bottom class -->
         <div class="card-body">
+            <!-- Card body to contain the title and content of the post -->
             <h2 class="card-title">{{ post.title }}</h2>
+            <!-- Display the title of the post -->
             <p class="card-text">{{ post.content }}</p>
+            <!-- Display the content of the post -->
             <a href="{{ url_for('post', post_id=post.id) }}" class="btn btn-primary">Read More &rarr;</a>
+            <!-- Link to read more about the post, using Flask's url_for to generate the URL -->
         </div>
         <div class="card-footer text-muted">
+            <!-- Card footer with muted text for the post date and author -->
             Posted on {{ post.date_posted.strftime('%Y-%m-%d') }} by <a href="#">{{ post.author.username }}</a>
+            <!-- Display the post date and author username -->
         </div>
     </div>
 {% endfor %}
+<!-- End of the loop through posts -->
+
 {% endblock %}
+<!-- End of content block -->

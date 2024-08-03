@@ -1,15 +1,32 @@
 {% extends "base.html" %}
+<!-- This template extends from "base.html" -->
+
 {% block title %}{{ post.title }}{% endblock %}
+<!-- This block sets the title of the page to the title of the post -->
+
 {% block content %}
+<!-- This block contains the main content for the page -->
 <article class="my-4">
+    <!-- An article element with a margin-top class from Bootstrap -->
     <h2>{{ post.title }}</h2>
-    <p class="text-muted">Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%Y-%m-%d') }}</p>
+    <!-- Header for the post title -->
+    <p class="text-muted">
+        <!-- Paragraph with muted text color -->
+        Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%Y-%m-%d') }}
+        <!-- Display the author and date the post was created -->
+    </p>
     <p>{{ post.content }}</p>
+    <!-- Display the post content -->
     {% if post.author == current_user %}
+        <!-- If the current user is the author of the post, show the Edit and Delete buttons -->
         <a href="{{ url_for('update_post', post_id=post.id) }}" class="btn btn-secondary">Edit</a>
+        <!-- Link to the edit post page with Bootstrap styling -->
         <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
+            <!-- Form to delete the post -->
             <button type="submit" class="btn btn-danger">Delete</button>
+            <!-- Submit button with Bootstrap styling -->
         </form>
     {% endif %}
 </article>
 {% endblock %}
+<!-- End of content block -->

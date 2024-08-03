@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <title>{% block title %}{% endblock %} - Blog App</title>
+    <meta charset="UTF-8">  <!-- Specifies the character encoding for the HTML document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- Ensures proper scaling on different devices -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">  <!-- Link to the custom CSS file -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">  <!-- Link to Bootstrap CSS for styling -->
+    <title>{% block title %}{% endblock %} - Blog App</title>  <!-- Title of the page, which can be dynamically set using Jinja2 blocks -->
 </head>
 <body>
+    <!-- Navbar with Bootstrap classes -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{{ url_for('home') }}">Blog</a>
+        <a class="navbar-brand" href="{{ url_for('home') }}">Blog</a>  <!-- Link to the home page -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>  <!-- Button for toggling the navbar on small screens -->
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                {% if current_user.is_authenticated %}
+            <ul class="navbar-nav ml-auto">  <!-- Navbar items aligned to the right -->
+                {% if current_user.is_authenticated %}  <!-- Check if the user is authenticated -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('account') }}">Account</a>
+                        <a class="nav-link" href="{{ url_for('account') }}">Account</a>  <!-- Link to the account page -->
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>  <!-- Link to the logout page -->
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>  <!-- Link to the login page -->
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>  <!-- Link to the registration page -->
                     </li>
                 {% endif %}
             </ul>
         </div>
     </nav>
     <div class="container">
+        <!-- Block for displaying flashed messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                    <div class="alert alert-{{ category }}">{{ message }}</div>  <!-- Display flashed messages with appropriate categories -->
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        {% block content %}{% endblock %}
+        {% block content %}{% endblock %}  <!-- Block for the content of the page, to be filled in by child templates -->
     </div>
+    <!-- Including JavaScript files for Bootstrap and other dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

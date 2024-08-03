@@ -1,20 +1,39 @@
 {% extends "base.html" %}
+<!-- This template extends from "base.html" -->
+
 {% block title %}Register{% endblock %}
+<!-- This block sets the title of the page to "Register" -->
+
 {% block content %}
+<!-- This block contains the main content for the page -->
 <h1 class="mt-4">Register</h1>
+<!-- Header for the page with a margin-top class from Bootstrap -->
+
 <form method="POST" action="">
+    <!-- The form uses the POST method to submit data -->
     <div class="form-group">
+        <!-- A Bootstrap form-group to contain the username input field -->
         <label for="username">Username</label>
+        <!-- Label for the username input field -->
         <input type="text" class="form-control" id="username" name="username" required>
+        <!-- Text input field with Bootstrap styling, an ID of "username", name "username", and required validation -->
     </div>
     <div class="form-group">
+        <!-- A Bootstrap form-group to contain the email input field -->
         <label for="email">Email address</label>
+        <!-- Label for the email input field -->
         <input type="email" class="form-control" id="email" name="email" required>
+        <!-- Email input field with Bootstrap styling, an ID of "email", name "email", and required validation -->
     </div>
     <div class="form-group">
+        <!-- A Bootstrap form-group to contain the password input field -->
         <label for="password">Password</label>
+        <!-- Label for the password input field -->
         <input type="password" class="form-control" id="password" name="password" required>
+        <!-- Password input field with Bootstrap styling, an ID of "password", name "password", and required validation -->
     </div>
     <button type="submit" class="btn btn-primary">Register</button>
+    <!-- Submit button with Bootstrap styling -->
 </form>
 {% endblock %}
+<!-- End of content block -->
