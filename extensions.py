@@ -1,7 +1,7 @@
 # Import necessary classes and functions from the flask_sqlalchemy, flask_bcrypt, and flask_login packages
 from flask_sqlalchemy import SQLAlchemy  # Import the SQLAlchemy class for database interactions
 from flask_bcrypt import Bcrypt  # Import the Bcrypt class for password hashing
-from flask_login import LoginManager, UserMixin, login_user, current_user, logout_user, login_required
+from flask_login import LoginManager
 # Import various utilities and classes from flask_login for user session management
 
 # Initialize a new SQLAlchemy instance which will be used to interact with the database

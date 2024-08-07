@@ -1,9 +1,9 @@
-import os
 from flask import Flask, render_template, url_for, flash, redirect, request, abort
 from config import Config
-from extensions import db, bcrypt, login_manager, current_user
+from extensions import db, bcrypt, login_manager
 from model import User, Post
 from flask_login import login_user,  current_user, logout_user, login_required, login_user
+from flask_migrate import Migrate
 
 
 
@@ -13,7 +13,7 @@ app.config.from_object(Config)
 db.init_app(app)
 bcrypt.init_app(app)
 login_manager.init_app(app)
-
+migrate = Migrate(app, db)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -35,6 +35,8 @@ def home():
     posts = Post.query.all()
     #Renders the home tamplate and pass the posts to it
     return render_template('home.html', posts=posts)
+
+
 
 #Define the route for the registration page
 @app.route('/register', methods=['GET', 'POST'])
@@ -63,6 +65,10 @@ def register():
     #Render the registration template
     return render_template('register.html')
 
+
+
+
+
 #Define the route for the login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -90,6 +96,9 @@ def login():
     #render the login template
     return render_template('login.html')
 
+
+
+
 #Define the route for logging out
 @app.route('/logout')
 def logout():
@@ -98,12 +107,18 @@ def logout():
     #Redirect to the home page
     return redirect(url_for('home'))
 
+
+
+
 #Define the route for the account page (requires login)
 @app.route('/account')
 @login_required
 def account():
     #Render the account template
     return render_template('account.html')
+
+
+
 
 #Define the route for creating a new post (requires login)
 @app.route('/post/new', methods=['GET','POST'])
@@ -126,6 +141,9 @@ def new_post():
     #Render the create post template
     return render_template('create_post.html', title='New Post')
 
+
+
+
 #Define the route for viewing a post by its ID
 @app.route('/post/<int:post_id>')
 def post(post_id):
@@ -133,6 +151,9 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     #Render the view post template and pass the post to it
     return render_template('view_post.html', title=post.title, post=post)
+
+
+
 
 #Define the route for updating a post by its ID(requires login)
 @app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
@@ -157,6 +178,9 @@ def update_post(post_id):
     #render the updatre post template and pass the post to it
     return render_template('create_post.html', title='Update Post', post=post)
 
+
+
+
 #Define the route for deleting a post by its ID (requires login)
 @app.route('/post/<int:post_id>/delete', methods=['POST'])
 @login_required
@@ -174,6 +198,8 @@ def delete_post(post_id):
     flash('Your post has been deleted!', 'success')
     #Redirect to the home page
     return redirect(url_for('home'))
+
+
 
 #Entry point of the application
 if __name__ == '__main__':
