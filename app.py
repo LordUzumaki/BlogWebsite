@@ -123,6 +123,24 @@ def account():
     return render_template('account.html')
 
 
+@app.route('/account/update/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def update_account(user_id):
+    user = User.query.get_or_404(user_id)
+    if user != current_user:
+        abort(403)
+    if request.method == 'POST':
+        user.username = request.form['username']
+        user.email = request.form['email']
+        if request.form['password']:  # Check if a new password is provided
+            user.password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
+        db.session.commit()
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('account'))
+    return render_template('update_account.html', user=user)
+
+
+
 
 
 #Define the route for creating a new post (requires login)
@@ -182,6 +200,7 @@ def update_post(post_id):
         return redirect(url_for('post', post_id=post.id))
     #render the updatre post template and pass the post to it
     return render_template('create_post.html', title='Update Post', post=post)
+
 
 
 
