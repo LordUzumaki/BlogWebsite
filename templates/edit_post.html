@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+<!-- This template extends from "base.html" -->
+
+{% block title %}Edit Post{% endblock %}
+<!-- This block sets the title of the page to "Edit Post" -->
+
+{% block content %}
+<!-- This block contains the main content for the page -->
+<h1 class="mt-4">Edit Post</h1>
+<!-- Header for the page -->
+
+<form method="POST" action="">
+    <!-- The form uses the POST method to submit data -->
+    <div class="form-group">
+        <!-- A Bootstrap form-group to contain the title input field -->
+        <label for="title">Title</label>
+        <!-- Label for the title input field -->
+        <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}" required>
+        <!-- Text input field for the title with Bootstrap styling, populated with the current post title, and required validation -->
+    </div>
+    <div class="form-group">
+        <!-- A Bootstrap form-group to contain the content textarea -->
+        <label for="content">Content</label>
+        <!-- Label for the content textarea field -->
+        <textarea class="form-control" id="content" name="content" rows="5" required>{{ post.content }}</textarea>
+        <!-- Textarea input field for the content with Bootstrap styling, populated with the current post content, 5 rows high, and required validation -->
+    </div>
+    <button type="submit" class="btn btn-primary">Update Post</button>
+    <!-- Submit button with Bootstrap styling -->
+</form>
+{% endblock %}
+<!-- End of content block -->

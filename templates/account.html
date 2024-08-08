@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+<!-- This template extends from "base.html" -->
+
+{% block title %}Account{% endblock %}
+<!-- This block sets the title of the page to "Account" -->
+
+{% block content %}
+<!-- This block contains the main content for the page -->
+
+<div class="account-page">
+    <h1 class="mt-4">Account</h1>
+    <!-- Header for the page with a margin-top class from Bootstrap -->
+    <div class="account-info">
+        <h2>Profile Information</h2>
+        <p><strong>Username:</strong> {{ current_user.username }}</p>
+        <!-- Display the username of the logged-in user -->
+        <p><strong>Email:</strong> {{ current_user.email }}</p>
+        <!-- Display the email of the logged-in user -->
+        <p><strong>Member Since:</strong> {{ current_user.date_joined.strftime('%B %d, %Y') }}</p>
+        <!-- Display the date the user joined in a formatted string -->
+
+    </div>
+    <div class="account-actions">
+        <h2>Action</h2>
+        <a href="{{ url_for('update_account') }}" class="btn btn-primary">Update Account</a>
+        <!-- Link to the update_account route with a Bootstrap button -->
+        <a href="{{ url_for('change_password') }}" class="btn btn-primary">Change Password</a>
+        <!-- Link to the change_password route with a Bootstrap button -->
+        <form action="{{ url_for('delete_account') }}" method="POST" style="display:inline;">
+            <!--Form to delete the account-->
+            <button type="submit" class="btn btn-danger">Delete Account</button>
+            <!--Submit button with Bootstrap styling-->
+        </form>
+    </div>
+</div>
+{% endblock %}
+<!-- End of content block -->
