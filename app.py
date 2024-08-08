@@ -1,19 +1,25 @@
+import os
 from flask import Flask, render_template, url_for, flash, redirect, request, abort
+from flask_migrate import Migrate
+
 from config import Config
 from extensions import db, bcrypt, login_manager
 from model import User, Post
 from flask_login import login_user,  current_user, logout_user, login_required, login_user
-from flask_migrate import Migrate
 
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.config.from_object(Config)
 
 db.init_app(app)
 bcrypt.init_app(app)
 login_manager.init_app(app)
 migrate = Migrate(app, db)
+
+# Print the template folder path to verify it's correct
+print(f"Templates folder: {os.path.join(app.root_path, 'templates')}")
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -23,8 +29,7 @@ with app.app_context():
     db.create_all()  # Ensure database tables are created
 
 
-#db import or make connection
-from model import User, Post
+
 
 #Define the route for the home page
 
