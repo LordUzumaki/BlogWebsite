@@ -1,4 +1,4 @@
-from datetime import datetime, timezone # Import the datetime class to handle date and time
+from datetime import datetime # Import the datetime class to handle date and time
 from extensions import db  # Import the db instance from the extensions module
 from flask_login import UserMixin  # Import UserMixin to add default implementations for user authentication
 
@@ -22,7 +22,7 @@ class Post(db.Model):  # Inherit from db.Model
     # Define columns for the Post table
     id = db.Column(db.Integer, primary_key=True)  # Primary key column
     title = db.Column(db.String(100), nullable=False)  # Title column, not null
-    date_posted = db.Column(db.DateTime, nullable=False, default=lambda: datetime.utcnow)  # Date posted column, default value is current time
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)  # Date posted column, default value is current time
     content = db.Column(db.Text, nullable=False)  # Content column, not null
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Foreign key column, references User table
 

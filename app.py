@@ -1,13 +1,14 @@
 import os
-from flask import Flask, render_template, url_for, flash, redirect, request, abort
+from datetime import datetime
+
+from flask import (Flask, abort, flash, redirect, render_template, request,
+                url_for)
+from flask_login import current_user, login_required, login_user, logout_user
 from flask_migrate import Migrate
 
 from config import Config
-from extensions import db, bcrypt, login_manager
-from model import User, Post
-from flask_login import login_user,  current_user, logout_user, login_required, login_user
-
-
+from extensions import bcrypt, db, login_manager
+from model import Post, User
 
 app = Flask(__name__, template_folder='templates')
 app.config.from_object(Config)
@@ -38,6 +39,7 @@ with app.app_context():
 def home():
     #Retrieve all posts from the database
     posts = Post.query.all()
+    print(posts)
     #Renders the home tamplate and pass the posts to it
     return render_template('home.html', posts=posts)
 
@@ -152,15 +154,20 @@ def new_post():
         #Get the form data
         title = request.form.get('title')
         content = request.form.get('content')
+
         #Create a new post instance
         post = Post(title=title, content=content, author=current_user)
         #add the post to the database
-        db.session.add(post)
-        db.session.commit()
-        #Flash a success message
-        flash('Your post has been created!', 'success')
-        #Redirect to the home page
-        return redirect(url_for('home'))
+        try:
+            db.session.add(post)
+            db.session.commit()
+            flash('Your post has been created!', 'success')
+            return redirect(url_for('new_post'))
+        except Exception as e:
+            db.session.rollback()
+            error_str = str(e.__dict__['orig'])  # Get the original error message
+            print(f"Error: {error_str}")  # Print the error to the console for debugging
+            flash(f'There was an issue creating your post: {error_str}', 'danger')
     #Render the create post template
     return render_template('create_post.html', title='New Post')
 
@@ -199,9 +206,18 @@ def update_post(post_id):
         #Redirct to the updated post page
         return redirect(url_for('post', post_id=post.id))
     #render the updatre post template and pass the post to it
-    return render_template('create_post.html', title='Update Post', post=post)
+    return render_template('edit_post.html', title='Update Post', post=post)
 
-
+@app.route('/add_test_post')
+def add_test_post():
+    # Create a new post instance
+    test_post = Post(title='Test Post', content='This is a test post.', date_posted=datetime.utcnow(), author=current_user)
+    
+    # Add the post to the database
+    db.session.add(test_post)
+    db.session.commit()
+    
+    return "Test post added!"
 
 
 
