@@ -15,6 +15,16 @@
             <span class="navbar-toggler-icon"></span>  <!-- Button for toggling the navbar on small screens -->
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if current_user.is_authenticated and current_user.is_admin%}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">  <!-- Navbar items aligned to the right -->
                 {% if current_user.is_authenticated %}  <!-- Check if the user is authenticated -->
                     <li class="nav-item">
@@ -33,6 +43,7 @@
                 {% endif %}
             </ul>
         </div>
+        
     </nav>
     <div class="container">
         <!-- Block for displaying flashed messages -->
