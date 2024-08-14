@@ -12,7 +12,7 @@ class User(db.Model, UserMixin):  # Inherit from db.Model and UserMixin
     date_joined = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     password = db.Column(db.String(60), nullable=False)  # Password column, not null
     posts = db.relationship('Post', backref='author', lazy=True)  # One-to-many relationship with Post
-
+    is_admin = db.Column(db.Boolean, default=False)  # New field
     # Define how the User object is printed
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
