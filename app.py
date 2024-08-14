@@ -1,14 +1,13 @@
 import os
 from datetime import datetime
 
-from flask import (Flask, abort, flash, redirect, render_template, request,
-                url_for)
+from flask import Flask, abort, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
-from flask_migrate import Migrate
-
 from config import Config
+from flask_migrate import Migrate
 from extensions import bcrypt, db, login_manager
 from model import Post, User
+
 
 app = Flask(__name__, template_folder='templates')
 app.config.from_object(Config)
@@ -18,6 +17,7 @@ bcrypt.init_app(app)
 login_manager.init_app(app)
 migrate = Migrate(app, db)
 
+
 # Print the template folder path to verify it's correct
 print(f"Templates folder: {os.path.join(app.root_path, 'templates')}")
 
@@ -26,8 +26,22 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+# Create an admin user if not already created
+def create_admin_user():
+    existing_admin = User.query.filter_by(email='admin@example.com').first()
+    if existing_admin:
+        print(f"Admin user {existing_admin.username} already exists.")
+    else:
+        admin_user = User(username='admin', email='admin@example.com', password=bcrypt.generate_password_hash('adminpassword').decode('utf-8'))
+        admin_user.is_admin = True
+        db.session.add(admin_user)
+        db.session.commit()
+        print(f"Admin user {admin_user.username} created.")
+
+
 with app.app_context():
     db.create_all()  # Ensure database tables are created
+    create_admin_user()  # Create the admin user
 
 
 
@@ -44,6 +58,16 @@ def home():
     return render_template('home.html', posts=posts)
 
 
+@app.route('/make-admin/<int:user_id>')
+@login_required
+def make_admin(user_id):
+    if not current_user.is_admin:
+        abort(403)  # Only admins can promote other users
+    user = User.query.get_or_404(user_id)
+    user.is_admin = True
+    db.session.commit()
+    flash(f'{user.username} has been promoted to admin!', 'success')
+    return redirect(url_for('admin_dashboard'))
 
 #Define the route for the registration page
 @app.route('/register', methods=['GET', 'POST'])
@@ -116,6 +140,14 @@ def logout():
 
 
 
+@app.route('/admin-dashboard')
+@login_required
+def admin_dashboard():
+    if not current_user.is_admin:
+        abort(403)  # Only allow access if the user is an admin
+    users = User.query.all()
+    posts = Post.query.all()
+    return render_template('admin_dashboard.html', users=users, posts=posts)
 
 #Define the route for the account page (requires login)
 @app.route('/account')
@@ -220,6 +252,16 @@ def add_test_post():
     return "Test post added!"
 
 
+@app.route('/delete-user/<int:user_id>')
+@login_required
+def delete_user(user_id):
+    if not current_user.is_admin:
+        abort(403)
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    flash('User has been deleted!', 'success')
+    return redirect(url_for('admin_dashboard'))
 
 #Define the route for deleting a post by its ID (requires login)
 @app.route('/post/<int:post_id>/delete', methods=['POST'])
