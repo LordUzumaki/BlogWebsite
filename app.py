@@ -202,16 +202,20 @@ def add_test_user():
     db.session.commit()
     return "Test user added!"
 
-# Route to delete a user (requires admin privileges)
 @app.route('/delete-user/<int:user_id>')
 @login_required
-@admin_required
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
+    if len(user.posts) > 0:
+        flash('User cannot be deleted as they have posts associated with them.', 'danger')
+        return redirect(url_for('admin_dashboard'))
     db.session.delete(user)
     db.session.commit()
     flash('User has been deleted!', 'success')
     return redirect(url_for('admin_dashboard'))
+
+
+
 
 # Route to remove admin permissions from a user (requires admin privileges)
 @app.route('/remove_permissions/<int:user_id>', methods=['POST'])

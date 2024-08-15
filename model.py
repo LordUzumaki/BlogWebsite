@@ -1,7 +1,7 @@
 from datetime import datetime # Import the datetime class to handle date and time
 from extensions import db  # Import the db instance from the extensions module
 from flask_login import UserMixin  # Import UserMixin to add default implementations for user authentication
-
+from sqlalchemy.orm import relationship
 # Define the User class, which represents users in the database
 class User(db.Model, UserMixin):  # Inherit from db.Model and UserMixin
     # Define columns for the User table
@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):  # Inherit from db.Model and UserMixin
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')  # Image file column, default value is 'default.jpg'
     date_joined = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     password = db.Column(db.String(60), nullable=False)  # Password column, not null
-    posts = db.relationship('Post', backref='author', lazy=True)  # One-to-many relationship with Post
+    posts = relationship('Post', backref='author', lazy=True, cascade="all, delete-orphan")  # One-to-many relationship with Post
     is_admin = db.Column(db.Boolean, default=False)  # New field
     # Define how the User object is printed
     def __repr__(self):
