@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+<!-- This template extends from "base.html" -->
+
+{% block title %}Update Account{% endblock %}
+<!-- This block sets the title of the page to "Update Account" -->
+
+{% block content %}
+<!-- This block contains the main content for the page -->
+<h1 class="mt-4">Update Account</h1>
+<!-- Header for the update account page -->
+<form method="POST" action="">
+    <!-- Form to update account details -->
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+        <!-- Input for the username with the current user's username pre-filled -->
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+        <!-- Input for the email with the current user's email pre-filled -->
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" value="{{ user.password }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Account</button>
+    <!-- Submit button for the form -->
+</form>
+{% endblock %}
+<!-- End of content block -->
