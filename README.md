@@ -114,7 +114,3 @@ After logging in as an admin, go to http://localhost:5500/admin_dashboard to man
 **Front page after logging in**
 
 ![My Blog Screenshot](img/PracticeFullstackDev.png)
-
-**Admin Permission control**
-
-![Admin Permission Control](img/admin_control.png)
