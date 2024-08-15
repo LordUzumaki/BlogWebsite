@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">  <!-- Specifies the character encoding for the HTML document -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- Ensures proper scaling on different devices -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">  <!-- Link to the custom CSS file -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">  <!-- Link to Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">  <!-- Link to the custom CSS file -->
     <title>{% block title %}{% endblock %} - Blog App</title>  <!-- Title of the page, which can be dynamically set using Jinja2 blocks -->
 </head>
 <body>
     <!-- Navbar with Bootstrap classes -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
         <a class="navbar-brand" href="{{ url_for('home') }}">Blog</a>  <!-- Link to the home page -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>  <!-- Button for toggling the navbar on small screens -->
