@@ -239,4 +239,4 @@ def delete_post(post_id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Ensure database tables are created before the app starts
-    app.run(debug=True, port=5500)
+    app.run(debug=True, host='0.0.0.0', port=5500)
